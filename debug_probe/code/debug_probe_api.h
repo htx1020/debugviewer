@@ -2,10 +2,16 @@
 
 #include <stddef.h>
 
-typedef int *(cb_dp_probe)(void* data, size_t len);
+enum {
+    dp_err_ok = 0,
+    dp_err_no_space,
+    dp_err_shm_open_fail,
+    dp_err_file_ftruncate,
+    dp_err_nmap,
+};
 
-int dp_module_init(const char* tcp_ip);
 
-void dp_module_deinit();
+int dp_module_init(const char* shm_name, unsigned int size, void** shmptr);
 
-int dp_module_add_probe(const char cmd, cb_dp_probe dp_probe);
+void dp_module_deinit(const char* shm_name, size_t size, void* shmptr);
+
